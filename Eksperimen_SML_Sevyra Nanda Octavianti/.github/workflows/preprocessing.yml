@@ -1,0 +1,37 @@
+name: Preprocess Iris Dataset
+
+on:
+  push:
+    paths:
+      - 'iris_raw.csv'
+      - 'preprocessing/automate_Sevyra Nanda Octavianti.py'
+      - '.github/workflows/preprocess.yml'
+  workflow_dispatch:
+
+jobs:
+  run-preprocessing:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.12'
+
+    - name: Install dependencies
+      run: |
+        pip install pandas scikit-learn matplotlib seaborn
+
+    - name: Run Preprocessing Script
+      run: python preprocessing/"automate_Sevyra Nanda Octavianti.py"
+
+    - name: Commit hasil preprocessing
+      run: |
+        git config --global user.name "github-actions"
+        git config --global user.email "actions@github.com"
+        git add preprocessing/iris_preprocessing.csv
+        git commit -m "Update: Hasil preprocessing otomatis dari GitHub Actions" || echo "No changes to commit"
+        git push
