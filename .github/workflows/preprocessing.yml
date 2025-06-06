@@ -22,15 +22,22 @@ jobs:
 
     - name: Install dependencies
       run: |
+        pip install --upgrade pip
         pip install pandas scikit-learn matplotlib seaborn
 
     - name: Run Preprocessing Script
-      run: python preprocessing/"automate_Sevyra Nanda Octavianti.py"
+      run: python "preprocessing/automate_Sevyra Nanda Octavianti.py"
 
     - name: Commit hasil preprocessing
       run: |
         git config --global user.name "github-actions"
         git config --global user.email "actions@github.com"
-        git add preprocessing/iris_preprocessing.csv
-        git commit -m "Update: Hasil preprocessing otomatis dari GitHub Actions" || echo "No changes to commit"
-        git push
+
+        if [[ -f preprocessing/iris_preprocessing.csv ]]; then
+          git add preprocessing/iris_preprocessing.csv
+          git commit -m "Update: Hasil preprocessing otomatis dari GitHub Actions" || echo "Nothing to commit"
+          git push
+        else
+          echo "File hasil preprocessing tidak ditemukan!"
+          exit 1
+        fi
