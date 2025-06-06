@@ -1,4 +1,4 @@
-name: Preprocess Iris Dataset
+name: run-preprocessing
 
 on:
   push:
@@ -7,37 +7,33 @@ on:
       - 'preprocessing/automate_Sevyra Nanda Octavianti.py'
   workflow_dispatch:
 
+permissions:
+  contents: write  
+
 jobs:
   run-preprocessing:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout Repository
-      uses: actions/checkout@v3
+      - name: Checkout Repository
+        uses: actions/checkout@v3
 
-    - name: Set up Python
-      uses: actions/setup-python@v5
-      with:
-        python-version: '3.12'
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
 
-    - name: Install dependencies
-      run: |
-        pip install --upgrade pip
-        pip install pandas scikit-learn matplotlib seaborn
+      - name: Install dependencies
+        run: |
+          pip install pandas scikit-learn matplotlib seaborn
 
-    - name: Run Preprocessing Script
-      run: python "preprocessing/automate_Sevyra Nanda Octavianti.py"
+      - name: Run Preprocessing Script
+        run: |
+          python preprocessing/automate_Sevyra Nanda Octavianti.py
 
-    - name: Commit hasil preprocessing
-      run: |
-        git config --global user.name "github-actions"
-        git config --global user.email "actions@github.com"
-
-        if [[ -f preprocessing/iris_preprocessing.csv ]]; then
-          git add preprocessing/iris_preprocessing.csv
-          git commit -m "Update: Hasil preprocessing otomatis dari GitHub Actions" || echo "Nothing to commit"
-          git push
-        else
-          echo "File hasil preprocessing tidak ditemukan!"
-          exit 1
-        fi
+      - name: Commit hasil preprocessing
+        run: |
+          git config --global user.name "github-actions"
+          git config --global user.email "actions@github.com"
+          git add preprocessing/iris_preprocessing.csv || echo "Nothing to add"
+          git diff --cached --quiet && echo "No changes to commit" || (git commit -m "Update hasil preprocessing otomatis" && git push)
