@@ -2,13 +2,13 @@ import os
 import pandas as pd
 from sklearn.preprocessing import LabelEncoder, StandardScaler
 
-def preprocess_iris():
-    # Path ke root folder (tempat iris_raw.csv berada)
+def preprocess_seed():
+    # Path ke root folder (tempat seed_raw.csv berada)
     BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    input_path = os.path.join(BASE_DIR, 'iris_raw.csv')
+    input_path = os.path.join(BASE_DIR, 'seeds_raw.csv')
 
     # Output di dalam folder ini (preprocessing)
-    output_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'iris_preprocessing.csv')
+    output_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'seed_preprocessing.csv')
 
     # 1. Load dataset
     df = pd.read_csv(input_path)
@@ -19,10 +19,10 @@ def preprocess_iris():
 
     # 3. Label encoding untuk kolom target
     le = LabelEncoder()
-    df['Species'] = le.fit_transform(df['Species'])
+    df['TYPE'] = le.fit_transform(df['TYPE'])
 
     # 4. Normalisasi fitur numerik
-    numeric_cols = df.drop('Species', axis=1).columns
+    numeric_cols = df.drop('TYPE', axis=1).columns
     scaler = StandardScaler()
     df[numeric_cols] = scaler.fit_transform(df[numeric_cols])
 
@@ -34,4 +34,4 @@ def preprocess_iris():
     return df
 
 if __name__ == "__main__":
-    preprocess_iris()
+    preprocess_seed()

@@ -3,7 +3,7 @@ name: run-preprocessing
 on:
   push:
     paths:
-      - 'iris_raw.csv'
+      - 'seeds_raw.csv'
       - 'preprocessing/automate_Sevyra-Nanda-Octavianti.py'
   workflow_dispatch:
 
